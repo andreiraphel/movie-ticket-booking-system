@@ -104,6 +104,17 @@ class MovieBookingSystemTest {
         assertEquals(expectedOutput, actualOutput);
     }
     
+    @Test
+    void testCancelReservationMethod_WhenCancelingUsingInvalidShowtime_PrintsInvalid() {
+        movieBookingSystem.bookTicket("10:00 AM", 5);
+        movieBookingSystem.cancelReservation("11:00 AM", 6);
+
+        String expectedOutput = "5 tickets successfully booked for 10:00 AM" + System.lineSeparator() + "Invalid showtime.";
+        String actualOutput = outContent.toString().trim();
+
+        assertEquals(expectedOutput, actualOutput);
+    }
+    
     
     @Test
     void testMainMethod_WhenProgramisNull_PrintSuccess() {
