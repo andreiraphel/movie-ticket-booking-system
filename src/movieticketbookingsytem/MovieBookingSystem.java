@@ -5,7 +5,7 @@ import java.util.Map;
 
 public class MovieBookingSystem extends BookingSystem {
     /**
-     * Creates a map list called "showTimes".
+     * Creates a map called "showTimes".
      */
     private static Map<String, Integer> showTimes = new HashMap<>();
 

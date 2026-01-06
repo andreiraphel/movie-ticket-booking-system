@@ -85,18 +85,28 @@ class MovieBookingSystemTest {
     @Test
     void testCancelReservationMethod_WhenCancelingValidTickets_PrintsSuccess() {
         movieBookingSystem.bookTicket("10:00 AM", 5);
-        movieBookingSystem.cancelReservation("10:00", 3);
+        movieBookingSystem.cancelReservation("10:00 AM", 3);
 
-        String expectedOutput = "5 tickets successfully booked for 10:00 AM";
+        String expectedOutput = "5 tickets successfully booked for 10:00 AM" + System.lineSeparator() + "3 tickets successfully canceled for 10:00 AM";
         String actualOutput = outContent.toString().trim();
 
         assertEquals(expectedOutput, actualOutput);
     }
     
-    /*
+    @Test
+    void testCancelReservationMethod_WhenCancelingInvalidTickets_PrintsInvalid() {
+        movieBookingSystem.bookTicket("10:00 AM", 5);
+        movieBookingSystem.cancelReservation("10:00 AM", 6);
+
+        String expectedOutput = "5 tickets successfully booked for 10:00 AM" + System.lineSeparator() + "Invalid operation (Attempt to cancel more tickets than booked)";
+        String actualOutput = outContent.toString().trim();
+
+        assertEquals(expectedOutput, actualOutput);
+    }
+    
+    
     @Test
     void testMainMethod_WhenProgramisNull_PrintSuccess() {
         movieBookingSystem.main(null);
     }
-    */
 }
