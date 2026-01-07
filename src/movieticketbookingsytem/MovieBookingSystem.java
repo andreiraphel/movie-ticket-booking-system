@@ -11,7 +11,7 @@ public class MovieBookingSystem extends BookingSystem {
     private static Map<String, Integer> showTimes = new HashMap<>();
 
     /**
-     * Creates a map list called "bookedTickets".
+     * Creates a map called "bookedTickets".
      */
     private static Map<String, Integer> bookedTickets = new HashMap<>();
 
@@ -37,7 +37,11 @@ public class MovieBookingSystem extends BookingSystem {
     @Override
     public final void bookTicket(final String newShowTime,
             final int noOfTickets) {
-        if (showTimes.get(newShowTime) != null) {
+        if (showTimes.get(newShowTime) == null) {
+            System.out.println("\nInvalid showtime.\n");
+        } else if (noOfTickets < 1) {
+            System.out.println("\nInvalid number.");
+        } else {
             int availableTickets = showTimes.get(newShowTime);
             if ((availableTickets - noOfTickets) >= 0) {
                 showTimes.put(newShowTime, availableTickets - noOfTickets);
@@ -53,20 +57,26 @@ public class MovieBookingSystem extends BookingSystem {
                 System.out.println(
                         "Not enough tickets available for this showtime");
             }
-        } else {
-            System.out.println("\nInvalid showtime.\n");
         }
     }
 
     @Override
     public final void checkAvailability(final String newShowTime) {
-        System.out.println(showTimes.get(newShowTime));
+        if (showTimes.get(newShowTime) != null) {
+            System.out.println(showTimes.get(newShowTime));
+        } else {
+            System.out.println("Enter Valid Showtime.");
+        }
     }
 
     @Override
     public final void cancelReservation(final String newShowTime,
             final int noOfTickets) {
-        if (bookedTickets.get(newShowTime) != null) {
+        if (bookedTickets.get(newShowTime) == null) {
+            System.out.println("\nInvalid showtime.\n");
+        } else if (noOfTickets < 1) {
+            System.out.println("\nInvalid number.");
+        } else {
             int noOfBookedTickets = bookedTickets.get(newShowTime);
             int availableTickets = showTimes.get(newShowTime);
 
@@ -79,8 +89,6 @@ public class MovieBookingSystem extends BookingSystem {
                 System.out.println("Invalid operation (Attempt to"
                         + " cancel more tickets than booked)");
             }
-        } else {
-            System.out.println("\nInvalid showtime.\n");
         }
     }
 
@@ -105,6 +113,10 @@ public class MovieBookingSystem extends BookingSystem {
         showTimes.put("3:00 PM", showtime3);
         showTimes.put("5:30 PM", showtime5);
 
+        System.out.println("Available Shows");
+        showTimes.forEach((key, values) -> System.out
+                .println(key + "   - Tickets: " + values));
+
         final int input1 = 0;
         final int input2 = 1;
         final int input3 = 2;
@@ -113,8 +125,11 @@ public class MovieBookingSystem extends BookingSystem {
         while (true) {
             System.out.println("\nEnter a command: ");
             System.out.println("\n'0' to exit");
+            //can accept negative amount
             System.out.println("'1' to Book Tickets");
+            //no error message for non existing shows
             System.out.println("'2' to Check Show Availability");
+            // can accept negative
             System.out.println("'3' to Cancel Tickets");
 
             int userInput = scanner.nextInt();

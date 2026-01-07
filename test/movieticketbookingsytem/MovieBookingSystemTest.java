@@ -85,10 +85,30 @@ class MovieBookingSystemTest {
     }
     
     @Test
+    void testBookTicketMethod_WhenBookingNegativeTicket_PrintInvalid() {
+        movieBookingSystem.bookTicket("10:00 AM", -1);
+
+        String expectedOutput = "Invalid number.";
+        String actualOutput = outContent.toString().trim();
+
+        assertEquals(expectedOutput, actualOutput);
+    }
+    
+    @Test
     void testCheckAvailabilityMethod_WhenPrintingTheAvailableTickets_PrintsNumberOfAvailableTickets() {
         movieBookingSystem.checkAvailability("10:00 AM");
 
         String expectedOutput = "20";
+        String actualOutput = outContent.toString().trim();
+
+        assertEquals(expectedOutput, actualOutput);
+    }
+    
+    @Test
+    void testCheckAvailabilityMethod_WhenInputIsInvalidShowtime_PrintsNumberOfAvailableTickets() {
+        movieBookingSystem.checkAvailability("11:00 AM");
+
+        String expectedOutput = "Enter Valid Showtime.";
         String actualOutput = outContent.toString().trim();
 
         assertEquals(expectedOutput, actualOutput);
@@ -127,12 +147,22 @@ class MovieBookingSystemTest {
         assertEquals(expectedOutput, actualOutput);
     }
     
+    @Test
+    void testCancelReservationMethod_WhenCancelingUsingNegativeTicket_PrintsInvalid() {
+        movieBookingSystem.bookTicket("10:00 AM", 5);
+        movieBookingSystem.cancelReservation("10:00 AM", -1);
+
+        String expectedOutput = "5 tickets successfully booked for 10:00 AM" + System.lineSeparator() + "\nInvalid number.";
+        String actualOutput = outContent.toString().trim();
+
+        assertEquals(expectedOutput, actualOutput);
+    }
     
     
  // ------------------ MAIN() TESTS ------------------
 
     @Test
-    void testMain_BookTicketsFlow() {
+    void testMainFunction_BookTicketsFlow_PrintSuccessful() {
         String input =
                 "1\n" +
                 "10:00 AM\n" +
@@ -152,7 +182,7 @@ class MovieBookingSystemTest {
     }
 
     @Test
-    void testMain_CheckAvailabilityFlow() {
+    void testMainFunction_CheckAvailabilityFlow_PrintSuccessful() {
         String input =
                 "2\n" +
                 "10:00 AM\n" +
@@ -169,7 +199,7 @@ class MovieBookingSystemTest {
 
 
     @Test
-    void testMain_CancelTicketsFlow() {
+    void testMainFunction_CancelTicketsFlow_PrintSuccessful() {
         String input =
                 "1\n" +
                 "10:00 AM\n" +
