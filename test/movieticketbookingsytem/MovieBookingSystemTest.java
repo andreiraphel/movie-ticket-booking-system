@@ -2,17 +2,23 @@ package movieticketbookingsytem;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 class MovieBookingSystemTest {
     private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
     private MovieBookingSystem movieBookingSystem;
+    
+    private PrintStream originalOut;
+    private InputStream originalIn;
 
     @BeforeEach
     void setUp() {
@@ -29,6 +35,12 @@ class MovieBookingSystemTest {
 
         MovieBookingSystem.setShowTimes(showTimes);
         MovieBookingSystem.setBookedTickets(bookedTickets);
+    }
+    
+    @AfterEach
+    void tearDown() {
+        System.setOut(originalOut);
+        System.setIn(originalIn);
     }
 
     @Test
@@ -109,15 +121,73 @@ class MovieBookingSystemTest {
         movieBookingSystem.bookTicket("10:00 AM", 5);
         movieBookingSystem.cancelReservation("11:00 AM", 6);
 
-        String expectedOutput = "5 tickets successfully booked for 10:00 AM" + System.lineSeparator() + "Invalid showtime.";
+        String expectedOutput = "5 tickets successfully booked for 10:00 AM" + System.lineSeparator() + "\nInvalid showtime.";
         String actualOutput = outContent.toString().trim();
 
         assertEquals(expectedOutput, actualOutput);
     }
     
     
+    
+ // ------------------ MAIN() TESTS ------------------
+
     @Test
-    void testMainMethod_WhenProgramisNull_PrintSuccess() {
-        movieBookingSystem.main(null);
+    void testMain_BookTicketsFlow() {
+        String input =
+                "1\n" +
+                "10:00 AM\n" +
+                "3\n" +
+                "0\n";
+
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+
+        MovieBookingSystem.main(new String[]{});
+
+        String output = outContent.toString();
+
+        assertTrue(output.contains(">>>>Book Ticket<<<<"));
+        assertTrue(output.contains("You selected: 10:00 AM"));
+        assertTrue(output.contains("3 tickets successfully booked for 10:00 AM"));
+        assertTrue(output.contains("Exiting the program."));
     }
+
+    @Test
+    void testMain_CheckAvailabilityFlow() {
+        String input =
+                "2\n" +
+                "10:00 AM\n" +
+                "0\n";
+
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        MovieBookingSystem.main(new String[]{});
+
+        String output = outContent.toString();
+
+        assertTrue(output.contains(">>>>Check Showtime<<<<"));
+        assertTrue(output.contains("20"));
+    }
+
+
+    @Test
+    void testMain_CancelTicketsFlow() {
+        String input =
+                "1\n" +
+                "10:00 AM\n" +
+                "5\n" +
+                "3\n" +
+                "10:00 AM\n" +
+                "3\n" +
+                "yes\n" +
+                "0\n";
+
+        System.setIn(new ByteArrayInputStream(input.getBytes()));
+        MovieBookingSystem.main(new String[]{});
+
+        String output = outContent.toString();
+
+        assertTrue(output.contains("5 tickets successfully booked for 10:00 AM"));
+        assertTrue(output.contains("3 tickets successfully canceled for 10:00 AM"));
+    }
+
+
 }

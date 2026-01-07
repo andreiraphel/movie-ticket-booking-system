@@ -54,7 +54,7 @@ public class MovieBookingSystem extends BookingSystem {
                         "Not enough tickets available for this showtime");
             }
         } else {
-            System.out.println("Invalid showtime.");
+            System.out.println("\nInvalid showtime.\n");
         }
     }
 
@@ -80,7 +80,7 @@ public class MovieBookingSystem extends BookingSystem {
                         + " cancel more tickets than booked)");
             }
         } else {
-            System.out.println("Invalid showtime.");
+            System.out.println("\nInvalid showtime.\n");
         }
     }
 
@@ -105,21 +105,10 @@ public class MovieBookingSystem extends BookingSystem {
         showTimes.put("3:00 PM", showtime3);
         showTimes.put("5:30 PM", showtime5);
 
-        /**
-         * TEST CASES
-        final int testCase1 = 5;
-        final int testCase2 = 100;
-        final int testCase3 = 3;
-        final int testCase4 = 2;
-        final int testCase5 = 5;
-
-        movieBookingSystem.bookTicket("10:00 AM", 5);
-        movieBookingSystem.bookTicket("10:00 AM", testCase2);
-        movieBookingSystem.cancelReservation("10:00 AM", testCase3);
-        movieBookingSystem.bookTicket("1:00 PM", testCase4);
-        movieBookingSystem.cancelReservation("1:00 PM", testCase5);
-        movieBookingSystem.checkAvailability("10:00 AM");
-        */
+        final int input1 = 0;
+        final int input2 = 1;
+        final int input3 = 2;
+        final int input4 = 3;
 
         while (true) {
             System.out.println("\nEnter a command: ");
@@ -130,19 +119,19 @@ public class MovieBookingSystem extends BookingSystem {
 
             int userInput = scanner.nextInt();
 
-            if (userInput == 0) {
+            if (userInput == input1) {
                 System.out.println("Exiting the program.");
                 break;
-            } else if (userInput == 1) {
+            } else if (userInput == input2) {
                 System.out.println(">>>>Book Ticket<<<<");
                 System.out.println("----Available Shows----");
 
                 for (String key : showTimes.keySet()) {
                     System.out.println(key);
                 }
-                
+
                 scanner.nextLine();
-                
+
                 System.out.println("\nEnter Time Slot: HH:MM (AM/PM)");
                 String userInputTime = scanner.nextLine().trim();
                 System.out.println("You selected: " + userInputTime);
@@ -151,15 +140,16 @@ public class MovieBookingSystem extends BookingSystem {
                 int userInputNoOfTickets = scanner.nextInt();
                 System.out.println("You selected: " + userInputNoOfTickets);
 
-                movieBookingSystem.bookTicket(userInputTime, userInputNoOfTickets);
-            } else if (userInput == 2) {
+                movieBookingSystem.bookTicket(userInputTime,
+                        userInputNoOfTickets);
+            } else if (userInput == input3) {
                 scanner.nextLine();
                 System.out.println(">>>>Check Showtime<<<<");
                 System.out.println("\nEnter Time Slot: HH:MM (AM/PM)");
                 String userInputTimeCheck = scanner.nextLine().trim();
-                
+
                 movieBookingSystem.checkAvailability(userInputTimeCheck);
-            } else if (userInput == 3) {
+            } else if (userInput == input4) {
                 scanner.nextLine();
                 System.out.println("\nEnter Time Slot: HH:MM (AM/PM)");
                 String userInputTime = scanner.nextLine().trim();
@@ -168,12 +158,14 @@ public class MovieBookingSystem extends BookingSystem {
                 System.out.println("\nEnter Number of Tickets: ");
                 int userInputNoOfTickets = scanner.nextInt();
                 System.out.println("You selected: " + userInputNoOfTickets);
-                
+
                 scanner.nextLine();
-                System.out.println("\nAre you sure you want to cancel?");
+                System.out
+                        .println("\nAre you sure you want to cancel? (yes/no)");
                 String verify = scanner.nextLine().trim();
                 if (verify.equalsIgnoreCase("yes")) {
-                    movieBookingSystem.cancelReservation(userInputTime, userInputNoOfTickets);
+                    movieBookingSystem.cancelReservation(userInputTime,
+                            userInputNoOfTickets);
                 }
             }
         }
